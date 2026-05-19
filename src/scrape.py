@@ -1,6 +1,18 @@
 from google_play_scraper import app, reviews, Sort 
 import pandas as pd
 import re
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import nltk
+
+import string
+
+# Download necessary NLTK data
+nltk.download('stopwords', quiet=True)
+nltk.download('wordnet', quiet=True)
+nltk.download('punkt', quiet=True)
+
 
 def scrape_fintech_reviews(app_dict, count=500):
     """ Fetches recent reviews for a dictionary of apps"""
@@ -56,4 +68,28 @@ def clean_text(text):
     text = re.sub(r'\s+', ' ', text)  # Collapse multiple spaces/newlines
     text = text.strip()
     return text
+
+def tokenize_and_lemmatize(text):
+    """
+    Tokenizes text, removes stopwords, and applies lemmatization.
+    Matches the notebook's modular_nlp_pipeline logic.
+    """
+    # 1. Cleaning (Regex)
+    text = re.sub(r'[^a-zA-Z\s]', ' ', str(text).lower())
+
+    # 2. Tokenization
+    tokens = nltk.word_tokenize(text)
+
+    # 3. Stop-word removal & Lemmatization
+    stop_words = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
+
+    processed = [lemmatizer.lemmatize(t) for t in tokens if t not in stop_words and len(t) > 2]
+    return " ".join(processed)
+
+
+
+
+
+
 
