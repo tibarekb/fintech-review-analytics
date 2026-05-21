@@ -12,6 +12,8 @@ import string
 nltk.download('stopwords', quiet=True)
 nltk.download('wordnet', quiet=True)
 nltk.download('punkt', quiet=True)
+nltk.download('punkt_tab', quiet=True)   # required in NLTK 3.8+
+nltk.download('omw-1.4', quiet=True)     # WordNet multilingual support
 
 
 def scrape_fintech_reviews(app_dict, count=500):
